@@ -1,16 +1,17 @@
 ---
-name: Tails Azimuth
-avatar: /static/images/avatar.png
-occupation: Professor of Atmospheric Science
-company: Stanford University
-email: address@yoursite.com
-twitter: https://twitter.com/Twitter
-linkedin: https://www.linkedin.com
-github: https://github.com
+name: Justin Jung
+avatar: /static/images/headshot_justin.jpg
+occupation: Applied Math, Economics, Statistics '23
+company: University of Chicago
+email: justinsoljung@gmail.com
+//twitter: https://twitter.com/Twitter
+linkedin: https://www.linkedin.com/in/justin-jung-420394111
+github: https://github.com/jsjung00
 ---
 
-Tails Azimuth is a professor of atmospheric sciences at the Stanford AI Lab. His research interests includes complexity modelling of tailwinds, headwinds and crosswinds.
+I am a senior at the University of Chicago studying Applied Math, Economics, and Statistics with specializations in Machine Learning and Data Science.
+I am particularly excited about machine learning research and applications and like to think about challenging data science problems.
 
-He leads the clean energy group which develops 3D air pollution-climate models, writes differential equation solvers, and manufactures titanium plated air ballons. In his free time he bakes raspberry pi.
+I love learning and find many recent developments in machine learning to be like magic. I've listed some of the particularly interesting projects and ideas that I've come across in this site.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.
+My ultimate aim is to build highly positively impactful, scalable solutions- modern technology excites me with its potential to solve real, human problems. I see huge opportunities with the intersection of big data and robust models and thus strive to develop a strong theoretical understanding of data-driven solutions.
