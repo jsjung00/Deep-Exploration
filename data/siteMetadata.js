@@ -2,8 +2,7 @@ const siteMetadata = {
   title: 'Deep Exploration',
   author: 'Justin Jung',
   headerTitle: 'Deep Exploration',
-  description:
-    'Site about interesting ideas and projects related to machine learning and data science',
+  description: 'Interesting ideas and projects related to machine learning and data science',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
