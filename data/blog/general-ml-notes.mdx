@@ -1,0 +1,69 @@
+---
+title: General ML Notes
+date: '2022-07-11'
+tags: ['notes', 'machine-learning']
+draft: false
+summary: Notes about various ML concepts that I should be able to fully understand and explain in a simple manner.
+---
+
+## General Machine Learning Questions
+
+1. Empirical Risk Minimization (7.1.2)
+
+   Risk is the expectation of the loss function. In particular we have the definition
+
+   $$
+   \mathbf{R} = \mathbb{E}[\int L(h(x), y) dP(x,y)]
+   $$
+
+   where $$h(x)$$ is our prediction of actual data point $$y$$. In particular, we cannot calculate
+   the actual expectation since we only have access to a sample of the data and
+   do not know the probability distribution of the data. Thus, we can calculate
+   an approximate average, giving us an empirical risk score, by using an empirical distribution
+
+   $$
+   \hat{\mathbf{R}} = \frac{1}{n} \sum_{i=1}^{n} L(h(x_i), y_i)
+   $$
+
+   We can consider the minimization problem. Solving the minimization problem depends on the data.
+   One example is if we want to classify data into two groups and say we have the 0-1 loss
+   where the loss is 1 if the prediction is not equal and 0 otherwise.
+   If the data were linearly seperable, then we could use a SVM to perfectly seperate
+   the data thus achieve 0 loss, reaching a total minimum.
+   _Further Ideas:_ Think about minimization for non-linearly seperable data.
+
+2. What are the tradeoffs between a wider NN and a deeper NN, holding the number of parameters fixed? (7.1.5)
+
+   We could consider the extreme cases. For simplicity, say we have only binary features (yes or no) and let us have $$n$$ features. If we are a limited to a very "skinny" network,
+   ex: only get 2 inputs, then even if we were to choose the most relevant features we would be losing on a lot of information if the other $$n-2$$ are particular important.
+   Then, regardless of the deepness of network, our total information is limited.
+   On the converse, if we had a very wide but shallow network (say all $$n$$ features are inputs but only 1 layer), we have all the information but we could do prediction
+   from at most one linear combination of our inputs and a non-linear function.
+   Between the two extremes, the second is a better choice- regression is a linear combination and can be seen as a "one layer network". With the right features,
+   prediction using regression is very good.
+
+   It's more interesting to think through the tradeoffs. Off the bat, we may not need all n features. For example, if we have perfect multi-collinearity in the data with
+   some features being linear combinations of the others, then can remove some features without impacting our prediction performance.
+   Similarly, if some features are highly correlated (but not say perfectly correlated) we could still think to remove one of the features and not lose that much information.
+   With more layers, we can have more complex predictions given a series of non-linear functions, so we would want to make the network reasonably deeper when possible (we might lose interpretability),
+   but if gains come at the expense of losing information then we might not think that the tradeoff between wideness and deepness is worth it.
+   _Further Ideas:_ Think about feature selection for non-linear data.
+
+3. The Universal Approximation Theorem states that a neural network with 1 hidden layer can approximate any continuous function for inputs within a specific range.
+   Then why can’t a simple neural network reach an arbitrarily small positive error? (7.1.6)
+
+   To provide some intuition, we note that every continuous function is riemann integrable. In particular, our riemann approximation of the function is arbitrarily close. To visualize this in
+   one-dimension, if we have some function $$f(x) \to y \in \mathbb{R}$$ then if we partition our domain into smaller and smaller histograms we can get an arbitrarily close approximation of
+   our function $$f$$ using step-wise functions.
+
+   The reason why our NN won't get an arbitrarily small error is because the data that network learns on (i.e training data) is not necessarily representing the nature of data.
+   The NN can learn the training data very well and the prediction error of the training data can be made arbitrarily small, but then we might be overfitting. The error measured by the test data
+   might be large because the NN may not be able to well approximate the function of the data based on the training data.
+
+4. What are saddle points and local minima? Which are thought to cause more problems for training large NNs? (7.1.7)
+
+   My calculus 3 teacher described saddle points using a pringle. The pringle is shaped like a saddle and it has a saddle point, where in one direction (say $$x$$) the partial derivative is at a local minima, whereas
+   in another direction (say $$y$$) the partial derivative is a local maxima. Local minima are points that achieve the minimum value in some neighborhood.
+
+   Local minima can affect learning of NN's. There are some methods to combat local minima. If we are at a local minima, we could a random pertubation to our gradient to escape the minimum.
+   Moreover, we train on multiple epochs or iterations of the data, starting with random weights, which would lead the function to a different path which might not have a local minima problem.
