@@ -14,6 +14,22 @@ summary: Various ML concepts that I hope to intuitively and thoroughly understan
    Since we have 4 pants, we have four different sets. Then, to construct a group of 2 shirts and 1 pair of pants, for each set containing a pant we can add
    two shirts. In particular, for each pant, we have $${6 \choose 2} = \frac{6!}{2!4!} = 15$$ different sets of two shirts. Thus, in total we have $$4*15 = 60$$ ways.
 
-2. Markov Chain Monte Carlo Sampling [TODO]
+2. Markov Chain Monte Carlo Sampling (7.2.3) [TODO]
 
-3.
+3. Candidate Sampling (7.2.5)
+
+4. Suppose you work for a news site that historically has translated only 1% of all its articles. Your coworker argues that we should translate more articles into
+   Chinese because translations help with the readership. On average, your translated articles have twice as many views as your non-translated articles.
+   What might be wrong with this argument? (7.2.7)
+
+   Here we have the problem of selection bias and confounding variables- it could be that only good articles are considered for translation. One way to verify if the increase in readership is due to the translation itself is to control
+   for other endogenous variables that affect readership (i.e number of hours spent writing, number of editors, number of drafts, ect).
+
+5. How to determine whether two sets of samples (e.g. train and test splits) come from the same distribution? (7.2.8)
+
+   To simplify the problem, we can imagine that the data is a scalar random variable (i.e $$X \in \mathbb{R}$$). Visually, we could plot the distribution of $$x$$ across its values
+   and visualize the train and test distributions.
+
+   To make this procedure precise, we could consider some tests to measure the difference between distributions. One simple metric is to simply take the supremum difference
+   between the two distribution functions. This is called the **Kolmogorov-Smirnov** test where it uses the metric $$\max_{x} |F_n(x) - G_n(x)|$$, where $$F$$ and $$G$$ are the empirical
+   distributions of the train and test data. As $$n \to \infty$$ we expect the two distributions to converge if they were coming from the same distribution $$X$$.
