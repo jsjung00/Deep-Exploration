@@ -1,0 +1,19 @@
+---
+title: ML Notes (Part 2- Sampling) [WIP]
+date: '2022-07-11'
+tags: ['notes', 'machine-learning']
+draft: true
+summary: Various ML concepts that I hope to intuitively and thoroughly understand.
+---
+
+## Questions related to sampling and training data
+
+1. If you have 6 shirts and 4 pairs of pants, how many ways are there to choose 2 shirts and 1 pair of pants? (7.2.1)
+
+   This is a combinatorics warmup question. We can split it into two parts. First, we can count number of possible ways to choose 1 pant.
+   Since we have 4 pants, we have four different sets. Then, to construct a group of 2 shirts and 1 pair of pants, for each set containing a pant we can add
+   two shirts. In particular, for each pant, we have $${6 \choose 2} = \frac{6!}{2!4!} = 15$$ different sets of two shirts. Thus, in total we have $$4*15 = 60$$ ways.
+
+2. Markov Chain Monte Carlo Sampling [TODO]
+
+3.

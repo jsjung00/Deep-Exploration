@@ -1,9 +1,9 @@
 ---
-title: General ML Notes
+title: ML Notes (Part 1- Basics)
 date: '2022-07-11'
 tags: ['notes', 'machine-learning']
 draft: false
-summary: Notes about various ML concepts that I should be able to fully understand and explain in a simple manner.
+summary: Various ML concepts that I hope to intuitively and thoroughly understand.
 ---
 
 ## General Machine Learning Questions
@@ -56,14 +56,77 @@ summary: Notes about various ML concepts that I should be able to fully understa
    one-dimension, if we have some function $$f(x) \to y \in \mathbb{R}$$ then if we partition our domain into smaller and smaller histograms we can get an arbitrarily close approximation of
    our function $$f$$ using step-wise functions.
 
+   ![histogram estimator](/static/images/hist_estimator.png)
+
    The reason why our NN won't get an arbitrarily small error is because the data that network learns on (i.e training data) is not necessarily representing the nature of data.
    The NN can learn the training data very well and the prediction error of the training data can be made arbitrarily small, but then we might be overfitting. The error measured by the test data
    might be large because the NN may not be able to well approximate the function of the data based on the training data.
 
 4. What are saddle points and local minima? Which are thought to cause more problems for training large NNs? (7.1.7)
 
+   ![pringle](/static/images/pringle.jpg)
+
    My calculus 3 teacher described saddle points using a pringle. The pringle is shaped like a saddle and it has a saddle point, where in one direction (say $$x$$) the partial derivative is at a local minima, whereas
    in another direction (say $$y$$) the partial derivative is a local maxima. Local minima are points that achieve the minimum value in some neighborhood.
 
-   Local minima can affect learning of NN's. There are some methods to combat local minima. If we are at a local minima, we could a random pertubation to our gradient to escape the minimum.
-   Moreover, we train on multiple epochs or iterations of the data, starting with random weights, which would lead the function to a different path which might not have a local minima problem.
+   Local minima can affect the learning of NN's. There are some methods to combat local minima. If we are at a local minima, we could a random pertubation to our gradient to escape the minimum.
+   Moreover, we train on multiple epochs or iterations of the data, starting with random weights, which would lead the function to a different path which might avoid the local minima problem.
+   Another solution is mini batch gradient descent- with mini batch gradient descent, the batch in which the gradient is calculated
+   is randomly determined and each batch adds noise to the gradient update calculation, which would prevent the gradient from falling into a
+   local minima problem.
+
+   Thankfully, local minima in large NN's are not much of problem. It is rare to have a local minima
+   in high dimensional space. It is rather more common to have a mixture of local minima and maxima, i.e saddle point.
+   Although saddle points are more frequent, they are less of problem because it is easier for the gradient can escape the saddle point.
+
+5. When should we use parametric vs. non-parametric methods? (7.1.10)
+   We should use parametric methods when we have enough information about the data in order to make
+   parametric assumptions. For example, if we know that the data is distributed such that it can be expressed as a linear combination of some parameters (ex: house price is linear w.r.t size, num of rooms, ect) then we could
+   paramterize the problem and consider linear regression models using those parameters to predict price. But if we couldn't make that assumption justifiably, we would
+   resort to a non-parametric approach. One example is k-nearest neighbors where we simply use the average of the nearest neighbors to get our prediction.
+
+6. How does overfitting affect bias and/or variance? [WIP]
+
+   The bias-variance tradeoff is a classic concept in statistics. An example helps crystallize the concept visually.
+   Suppose we want to approximate some non-linear funciton, say $$f(x) = x + x^2 + \epsilon$$. If we a limited number of features,
+   for example say we restict ourselves to the functions $$\hat{f}(x) = cx$$ then clearly we will not fit the data well.
+
+7. Why does ensembling independently trained models generally improve performance? (7.1.11) [WIP]
+
+   Ensembling improves model performance because it adds robustness against overfitting through a diversity of the models.
+   For example, say that we have a set of features that are useful for prediction and in particular there is a feature $$x_{op}$$ that is very useful for prediction
+   (an extreme case is that is a linear function of the output $$y$$). By chance it could be that this variable $$x_{op}$$ does not
+   commonly exist in the test data. If the model relies heavily on the input $$x_{op}$$ then it would not
+   be able to do good prediction on data points missing such feature. More generally, it could be that
+   a model overfits to the training data.
+
+   Now say we had mulitple independent models where each model received a random subset of the features to train on. This means that
+   some models would have to train without the help of $$x_{op}$$ and each model would have different information to learn from.
+   Intuitively, since these independent models are trained on different sets of input features, they are learning differently
+   and getting different perspective of the data. With this diversity of learning, our esemble of models
+   (say by taking the average of all the models) is more robust against overfitting and has
+   better performance due to the various angles that each model contributes.
+
+   _Further Ideas_: Think of ensembling models with the same input features. Explain why
+   ensemble methods decrease variance.
+
+8. Why does L1 regularization tend to lead to sparsity while L2 regularization pushes weights
+   closer to 0? (7.1.12)
+
+This is a great question and there is a pretty good graphical intuition for the answer. There is a picture from ESL that I believe explains this well.
+
+![regularization](/static/images/loneltwo.png)
+
+With L1 regularization we use the absolute value as the norm. In other words the risk of our prediction problem is
+$$ \int [\hat{f}(x) - f(x)]^2 dP(x) + \lambda \sum_k |\theta_k| $$. If we have two parameters, then we can think of the level set of the cost of the parameters being
+a diamond, where each point on the diamond has the same cost. As shown in the picture, if we want to minimize our cost, we look to use the furthest point on the
+diamond which ends up being max value for one parameter and zero for another (this is generalizable to higher dimensions). Then, we end up having feature selection
+and in particular sparsity of our features.
+
+With L2 regularization we use the squared value as our norm. In other words the risk of our prediction problem is
+$$ \int [\hat{f}(x) - f(x)]^2 dP(x) + \lambda \sum_k |\theta_k|^2 $$. Here, each point on the circle has equal cost in the risk function. 
+We can see how L2 leads to the parameters shrinking to zero as if we introduce higher penalities for weights, i.e $$\lambda >> 0$$, then the parameters will end up
+being small enough to fit inside of the circle which has a smaller and smaller radius for $$\lambda $$ larger. Thus L2 leads to weights closer to zero.
+
+**Clarification:** L2 doesn't uniquely push weights close to zero- L1 also does so too. L2 does not have the sparsity encouraging properties however with the circle
+level set.
