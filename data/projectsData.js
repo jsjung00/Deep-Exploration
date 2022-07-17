@@ -5,6 +5,12 @@ const projectsData = [
     imgSrc: '/static/images/candy.png',
     href: 'https://github.com/jsjung00/eat-candy/',
   },
+  {
+    title: 'Building Shooter Game as Fast as Possible',
+    description: `I wanted to see how much of a 2D shooter game like surviv.io I could build in one sitting; surprised by how much can be done in a few hours`,
+    imgSrc: '/static/images/shooter.png',
+    href: 'https://github.com/jsjung00/lean2DShooter',
+  },
 ]
 
 export default projectsData
