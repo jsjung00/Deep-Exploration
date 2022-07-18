@@ -85,13 +85,31 @@ summary: Various ML concepts that I hope to intuitively and thoroughly understan
    paramterize the problem and consider linear regression models using those parameters to predict price. But if we couldn't make that assumption justifiably, we would
    resort to a non-parametric approach. One example is k-nearest neighbors where we simply use the average of the nearest neighbors to get our prediction.
 
-6. How does overfitting affect bias and/or variance? [WIP]
+6. How does under/overfitting affect bias and/or variance?
 
    The bias-variance tradeoff is a classic concept in statistics. An example helps crystallize the concept visually.
-   Suppose we want to approximate some non-linear funciton, say $$f(x) = x + x^2 + \epsilon$$. If we a limited number of features,
-   for example say we restict ourselves to the functions $$\hat{f}(x) = cx$$ then clearly we will not fit the data well.
+   Say we have some function $$f(x)$$ which we want to estimate and suppose that we collect data that has noise added to it.
 
-7. Why does ensembling independently trained models generally improve performance? (7.1.11) [WIP]
+   One way to approximate this function is to use a histogram estimator- we plot the points of our data on a graph,
+   we split up the domain into these buckets and for each point in a bucket we output as our guess the mean of the bucket.
+
+   One parameter that we can choose is precisely the length of each bucket. For example, if we had only **one** bucket (i.e length is maximal)
+   then for every point in the domain we spit out a constant, the mean. This leads to zero variance. However, if $$f(x)$$ non-constant
+   then our prediction will be off, it will be heavily biased.
+
+   Alternatively, we can consider a really **fine** bucket, splitting up the domain into these really tiny pieces. For example, we could
+   split it up so small that each bucket contains a point and we spit out as our prediction on the bucket neighborhood the point it contains.
+   But based on our information we know that this will also lead to problems- our data is noisy, so even points really close together
+   that should have the same $$f$$ value can be far apart. It could be that in the test set (in another roll of the noise die) there's a
+   point in the bucket neighborhood of some point in the train set that is very different in value (due to noise), but with our estimator we end up
+   just predicting the value of the point in the train set, leading to error in our guess.
+
+   In particular, it would lead to a high variance, because we would have a large difference between the expected prediction of our guess
+   $$\mathbb{E}[h(x)]$$ (which would collapse to $$f(x)$$ for some mean zero noise $$\epsilon$$) and our prediction $$h(x)$$ for each point $$x$$.
+   If we were to use a larger width bucket, maybe taking the average of some k-neighbors, the noise between neighbors could cancel out and
+   we could get a better estimate.
+
+7. Why does ensembling independently trained models generally improve performance? (7.1.11)
 
    Ensembling improves model performance because it adds robustness against overfitting through a diversity of the models.
    For example, say that we have a set of features that are useful for prediction and in particular there is a feature $$x_{op}$$ that is very useful for prediction
@@ -100,7 +118,7 @@ summary: Various ML concepts that I hope to intuitively and thoroughly understan
    be able to do good prediction on data points missing such feature. More generally, it could be that
    a model overfits to the training data.
 
-   Now say we had mulitple independent models where each model received a random subset of the features to train on. This means that
+   Now say we had multiple independent models where each model received a random subset of the features to train on. This means that
    some models would have to train without the help of $$x_{op}$$ and each model would have different information to learn from.
    Intuitively, since these independent models are trained on different sets of input features, they are learning differently
    and getting different perspective of the data. With this diversity of learning, our esemble of models
