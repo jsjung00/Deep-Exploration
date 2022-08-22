@@ -1,0 +1,231 @@
+---
+title: Minimax Algorithm for Connect 4
+date: '2022-08-22'
+tags: ['projects', 'minimax', 'games']
+draft: false
+summary: How to build a connect 4 player using minimax algorithm (with alpha beta pruning and heuristic search)
+images: []
+layout: PostLayout
+canonicalUrl:
+---
+
+### Introduction/Background
+
+My friend and I used to joke that brute force search based methods are "dumb" and not worth thinking about.
+However, our perspective may have been misguided since a lot of problems can be effectively solved using a brute force search
+based method. For example, an AI player can competitively play the game Connect 4 using the minimax algorithm and simply
+searching through
+the game tree and finding the state that maximizes (or minimizes) the player's value. This post will cover how minimax was used
+to create a Connect 4 AI player, including the implementation of alpha beta pruning, an improvement to the minimax algorithm, and
+a heuristic evaluation function.
+
+### Introduction to Minimax
+
+Minimax is an algorithm used for turn based games, such as Connect 4. The term "minimax" can be derived from the
+adversial nature of a game such as Connect 4. If we denote larger values for a state to mean that Player 1 has a higher chance of winning, then
+lower values necessarily mean that Player 2 has a higher chance of winning. In other words, Player 1 is looking to _maximize_ the
+values of the game states, whereas the adversial Player 2 is looking to _minimize_ the values of the game states.
+
+In particular, we can construct a game state tree that the players can traverse to optimize their chance of winning.
+We can think of the empty connect 4 board as the beginning state and in our tree it would be the root node. Then, the first player
+(say Player 1), can place a piece in any of the 7 columns. We then would have 7 children nodes connecting to the root node, where
+each children node is a game state containing Player 1's first move.
+
+![game tree](/static/images/connect_four/connect_four_game_tree.png)
+
+Since Connect 4 alternates turns, the next move would be for Player 2. For each child node representing a state with
+one Player 1 move, we can imagine another 7 child nodes under that child node representing the 7 possible moves
+that Player 2 can move to. Then, we can do this iteratively to develop our game tree, stopping and reaching a
+terminal (leaf) node when there is either four in a row or no more moves to make.
+
+We can think of assigning values to the game states in our game tree. First we denote Player 1 as
+the maximizer and Player 2 as the minimizer. Then, in the Connect 4 AI program,
+we assigned the terminal states (leaf nodes) a large positive value if the game is won by Player 1, a large
+negative value if the game is won by Player 2, and 0 if the game is a draw.
+
+Then, we can recursively assign values to the parent nodes. This is best illustrated by an example.
+
+![minimax](/static/images/connect_four/minimax_example.png)
+
+For example, on the maximizer's turn (Player 1), the player will look at all of the children node of some state $$s$$
+and denote the value of $$s$$ as the maximum value of all the children nodes. Conversely, on the minimizer's turn,
+(Player 2), the player will look at all the children node of $$s$$ and denote its value as the minimum value of
+all the children nodes.
+
+The pseudo-code for the minimax algorithm (from Wikipedia) is here:
+
+```
+function  minimax( node, depth, maximizingPlayer ) is
+    if depth = 0 or node is a terminal node then
+        return the heuristic value of node
+    if maximizingPlayer then
+        value := −∞
+        for each child of node do
+            value := max(value, minimax(child, depth − 1, FALSE))
+        return value
+    else (* minimizing player *)
+        value := +∞
+        for each child of node do
+            value := min( value, minimax( child, depth − 1, TRUE ) )
+        return value
+```
+
+### Alpha-Beta Pruning
+
+We note that we don't have to evaluate the entire search tree. In fact, we can speed up the computation by
+eliminating sub-trees that we know don't need to be evaluated.
+
+![minimax](/static/images/connect_four/ab_pruning.png)
+
+For example, for the second to last layer with the 4 node, once the minimizer scans through the child nodes and gets
+has a minimum, it doesn't need to process any node that is larger than that minimum (i.e 5). I found it helpful to work through
+an example of alpha-beta pruning
+step by step, which can be seen [here.](https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-4-alpha-beta-pruning/)
+In particular, the rule is that if we denote $$\alpha$$ as worst (minimum) score the maximizing player can get and $$\beta$$
+the worst score (the maximum) score that the minimizing player can get, we can reject sub-trees of states where
+$$\beta < \alpha$$.
+The pseudo-code with alpha beta pruning implemented is here
+
+```
+function alphabeta(node, depth, α, β, maximizingPlayer) is
+    if depth = 0 or node is a terminal node then
+        return the heuristic value of node
+    if maximizingPlayer then
+        value := −∞
+        for each child of node do
+            value := max(value, alphabeta(child, depth − 1, α, β, FALSE))
+            if value ≥ β then
+                break (* β cutoff *)
+            α := max(α, value)
+        return value
+    else
+        value := +∞
+        for each child of node do
+            value := min(value, alphabeta(child, depth − 1, α, β, TRUE))
+            if value ≤ α then
+                break (* α cutoff *)
+            β := min(β, value)
+        return value
+```
+
+### Heuristic Evaluation Function
+
+With a very large search tree, it's often not computationally feasible to search through all the layers of the tree.
+To make things more computationally tractable, one can limit the search to a max depth and simply create a heuristic value
+for the state at the end of the truncated max depth search.
+
+For the program, I constructed the heuristic evaluation function as follows. I considered every window of 4 in the
+board (i.e 4 horizontal, 4 vertical, 4 diagonal). Then, for each window, if the window was not blocked (i.e had no
+opponent piece to prevent a connect 4), I counted the number of player pieces in that window. I then gave the following
+scores: having 1 piece was a score of 0.5, having two pieces was a score of 3, having three pieces was a score of 9.
+(Note that the board did not have any 4 in a row since it would be a terminal state and assigned a terminal value).
+To make the program a defensive player as well- good at blocking the opponent from getting 4 in a row- I rewarded
+blocks. If the opponent player had 1 piece it got a score of 0.5, for 2 pieces it got a score of 2, for 3 pieces it
+got a score of 40. I upweighted the score of blocking three opponet pieces to prevent the bot from letting the opponent win by placing the fourth piece
+in a three in a row window.
+
+The score of the board was a weighted multiple of the sum scores of all the windows, normalized by the number of pieces. This prevents later
+board states (which naturally have more combos) from having an artifically higher value than earlier states. We note that
+this score is by construction larger than zero and thus will be multiplied by 1 or -1 depending if that player is
+maximizing or minimizing. The code looks
+like this:
+
+```js
+return (
+  (1.5 *
+    (playerCombos[1] * 0.5 +
+      playerCombos[2] * 3 +
+      playerCombos[3] * 9 +
+      blockedCombos[1] * 0.5 +
+      blockedCombos[2] * 2 +
+      blockedCombos[3] * 40)) /
+  totNumberPieces
+)
+```
+
+### Discounting longer games
+
+To encourage the program to be ruthless and secure a victory in as little moves as possible, I discounted the
+value of the board by the depth of the state in the game search. The intuition is that the value of a board one move from now should
+be higher than the value of a board ten moves from now, all else equal.  
+In particular, the discount function was linear where a board with the max depth number of moves had a discount factor $$0.75$$,
+and a board with a depth 0 had a discount factor of $$1$$ (i.e no value loss).
+In code we have
+
+```js
+const discountedHeuristicValue = heuristicValue - 0.25 * heuristicValue * (depth / MAX_DEPTH)
+```
+
+### Alpha Beta Minimax Code with Heuristic Value
+
+In sum, the program code is the following:
+
+```js
+const MAX_BASE = 80
+const MIN_BASE = -80
+
+function minimax(board, depth, isMaximizing, alph, beta) {
+  //check if game terminated
+  const overResult = isOver(board)
+  if (overResult == 1) {
+    return MAX_BASE - 0.25 * MAX_BASE * (depth / MAX_DEPTH)
+  }
+  if (overResult == 2) {
+    return MIN_BASE + 0.25 * MAX_BASE * (depth / MAX_DEPTH)
+  }
+  //heurustic value if at max depth
+  if (depth >= MAX_DEPTH) {
+    const playerNum = humanStarts ? 2 : 1
+    const heuristicValue = altHeuristicValue(board, playerNum, false)
+    const discountedHeuristicValue = heuristicValue - 0.25 * heuristicValue * (depth / MAX_DEPTH)
+    if (playerNum === 1) {
+      return discountedHeuristicValue
+    } else {
+      return -1 * discountedHeuristicValue
+    }
+  }
+
+  //game non-terminated
+  if (isMaximizing) {
+    let bestVal = -200
+    for (let j = 0; j < 7; j++) {
+      const nextMove = getNextMove(j, board)
+      if (nextMove == null) {
+        continue
+      }
+      let childBoard = board.map((row) => row.slice())
+      childBoard[nextMove[0]][nextMove[1]] = 1
+      let childVal = minimax(childBoard, depth + 1, false, alph, beta)
+      bestVal = Math.max(bestVal, childVal)
+      alph = Math.max(alph, bestVal)
+      if (beta <= alph) {
+        break
+      }
+    }
+    return bestVal
+  } else {
+    let bestVal = 200
+    for (let j = 0; j < 7; j++) {
+      const nextMove = getNextMove(j, board)
+      if (nextMove == null) {
+        continue
+      }
+      let childBoard = board.map((row) => row.slice())
+      childBoard[nextMove[0]][nextMove[1]] = 2
+      let childVal = minimax(childBoard, depth + 1, true, alph, beta)
+      bestVal = Math.min(bestVal, childVal)
+      beta = Math.min(beta, bestVal)
+      if (beta <= alph) {
+        break
+      }
+    }
+    return bestVal
+  }
+}
+```
+
+In order for the program to make a move, it gets the current board state, finds the possible moves it can make,
+and passes the potential board states into the minimax function above to get the value of each move. Then, it simply
+chooses the best move (either maximum value for maximizing player or the minimum value for minimizing player) as the move to make.
+
+Feel free to try out the [game!](https://jsjung00.github.io/connect-four/)
