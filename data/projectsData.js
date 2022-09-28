@@ -1,5 +1,11 @@
 const projectsData = [
   {
+    title: 'DQN for Self Driving Car Agent',
+    description: `Self Driving Car Agent in 2D using DQN, built with tensorflow.js`,
+    imgSrc: '/static/images/car-picture.png',
+    href: 'https://github.com/jsjung00/twoDCar',
+  },
+  {
     title: 'Eat Candy!',
     description: `I recreated a game I played as a kid on a flip phone where I ate candy falling from the screen, now with added improvements`,
     imgSrc: '/static/images/candy.png',
