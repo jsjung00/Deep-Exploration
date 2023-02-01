@@ -9,8 +9,16 @@ linkedin: https://www.linkedin.com/in/justin-jung-420394111
 github: https://github.com/jsjung00
 ---
 
+**About Me**
+
 I am a senior at the University of Chicago. I study Computational Applied Math, Economics, and Statistics with a specialization in Machine Learning and Data Science.
 
 I am mainly interested in developing data efficient learning methods to build intelligent agents that generalize to real world scenarios. Broadly I am interested in reinforcement learning and robot learning.
 
 I am a big believer in intuition- both in understanding and in explanation- and hope to share some of the things that I’ve learned or projects that I have found interesting here on this site!
+
+---
+
+**Graduate Coursework**: Statistical Learning Theory, Intro to Machine Learning, Topics in ML: Learning and Game Theory, Big Data and Economic Applications, Non-Parametric Inference, Machine Learning and Large Scale Data Analysis
+
+**Select Undergraduate Coursework**: Honors Discrete, Accelerated Real Analysis, Markov Chains, Theory of ODE's, Robotics
