@@ -11,7 +11,7 @@ github: https://github.com/jsjung00
 
 **About Me**
 
-I graduated from the University of Chicago in 2023, where I studied Computational Applied Math (BS), Economics (BA), and Statistics (BS) with a specialization in Machine Learning and Data Science.
+I graduated from the University of Chicago in 2023, where I studied Computational Applied Math (BS), Economics (BA), and Statistics (BS) with specializations in Machine Learning and Data Science.
 
 Broadly I am interested in machine learning, both theoretical and applied, and reinforcement learning.
 
