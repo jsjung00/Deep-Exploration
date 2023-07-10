@@ -19,6 +19,6 @@ I am a big believer in intuition- both in understanding and in explanation- and 
 
 ---
 
-**Graduate Coursework**: Statistical Learning Theory (PhD), Intro to Machine Learning (PhD), Topics in ML: Learning and Game Theory, Big Data and Economic Applications, Data Science and Econometric Applications, Non-Parametric Inference, Machine Learning and Large Scale Data Analysis
+**Graduate Coursework**: Statistical Learning Theory (PhD), Machine Learning (PhD), Topics in ML: Learning and Game Theory, Big Data and Economic Applications, Data Science and Econometric Applications, Non-Parametric Inference, Machine Learning and Large Scale Data Analysis
 
 **Select Undergraduate Coursework**: Honors Graph Theory, Honors Discrete Mathematics, Optimization, Accelerated Real Analysis, Markov Chains, Theory of ODE's, Robotics
