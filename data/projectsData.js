@@ -2,7 +2,7 @@ const projectsData = [
   {
     title: 'Image Based Recommender System for Dating',
     description: `Content-based recommender system for online dating`,
-    imgSrc: '/static/images/flame.png',
+    imgSrc: '/static/images/cupid.png',
     href: 'https://github.com/jsjung00/recsys-dating',
   },
   {
