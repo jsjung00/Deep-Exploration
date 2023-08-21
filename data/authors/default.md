@@ -17,7 +17,7 @@ Broadly I am interested in machine learning, both theoretical and applied, and r
 
 I am a big believer in intuition- both in understanding and in explanation- and hope to share some of the things that I’ve learned here.
 
-_I am currently actively looking for full time job opportunities._
+**Note:** I am actively seeking full time job opportunities.
 
 ---
 
