@@ -13,7 +13,7 @@ github: https://github.com/jsjung00
 
 I graduated from the University of Chicago in 2023, where I studied Computational Applied Math (BS), Statistics (BS), and Economics (BA) with specializations in Machine Learning and Data Science.
 
-Broadly I am interested in machine learning, both theoretical and applied, and reinforcement learning.
+Broadly I am interested in machine learning, both theoretical and applied.
 
 I am a big believer in intuition- both in understanding and in explanation- and hope to share some of the things that I’ve learned here.
 
