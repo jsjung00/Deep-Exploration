@@ -1,7 +1,7 @@
 ---
 name: Justin Jung
 avatar: /static/images/headshot_justin_lighting.jpg
-occupation: Comp. Applied Math, Economics, Statistics '23
+occupation: Computational Applied Math, Statistics, Economics '23
 company: University of Chicago
 email: justinsoljung@gmail.com
 //twitter: https://twitter.com/Twitter

@@ -15,7 +15,7 @@ const siteMetadata = {
   //twitter: 'https://twitter.com/Twitter',
   //facebook: 'https://facebook.com',
   //youtube: 'https://youtube.com',
-  linkedin: 'https://www.linkedin.com/in/justin-jung-420394111',
+  linkedin: 'https://www.linkedin.com/in/jsjung00',
   locale: 'en-US',
   analytics: {
     // If you want to use an analytics provider you have to add it to the
