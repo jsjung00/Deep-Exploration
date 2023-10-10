@@ -56,7 +56,7 @@ const styles = {
 
 function ResearchInfo() {
   return (
-    <div>
+    <div style={{ display: 'none' }}>
       <h2 style={styles.h2}>Research</h2>
       <p style={styles.body}>
         Broadly I am interested in applied and theoretical machine learning. Some specific research
