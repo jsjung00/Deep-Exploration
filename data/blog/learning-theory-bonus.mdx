@@ -1,0 +1,244 @@
+---
+title: Statistical Learning Theory Challenge Problems
+date: '2023-03-23'
+tags: ['notes', 'machine-learning']
+draft: false
+summary: Select bonus challenge problems I solved in Professor Srebo's TTIC 31120 Statistical Learning Theory.
+---
+
+# Learning via gradient descent
+
+_References: Gordon 2012 Optimization Lecture 5_
+
+We can show that for a choice stepsize, gradient descent converges to the minimum $L2$ norm solution.
+
+We use the huber loss function $loss_{hub}(\hat{y},y)$. Thus we can define sample loss as the objective function
+
+$$
+f(w):=L_{S}^{hub}(w)=\frac{1}{m}\sum_{i}loss_{hub}(<w,x_{i}>,y_{i})
+$$
+
+**Claim:**
+$f$ is convex and differentiable.
+
+To see that $f$ is convex w.r.t $w$, we recognize that $f$ is a sum of functions- each function is either $\frac{1}{2}(<w,x>-y)^{2}$ which is the composition of a convex function $x^{2}$ with an affine function and thus is precisely a convex function w.r.t. $w$ or $|<w,x>-y|-\frac{1}{2}$ where $|x|=max(x,-x)$ is the pointwise maximum of convex functions and thus convex, and so we have the composition of a convex function with an affine function and thus we get a convex function w.r.t $w$.
+
+Since the sum of convex functions is convex we conclude $f$ is convex.
+
+To see that $f$ is differentiable, it is enough to show that the partials are continuous. In particular we show that the partials of order 2 are continuous, meaning that $f$ is twice differentiable. We have
+
+$$
+f(w)=\frac{1}{m}[\sum_{i:|<w,x_{i}>-y_{i}|\geq1}|<w,x_{i}>-y_{i}|-\frac{1}{2}+\sum_{i:|<w,x_{i}>-y_{i}|\leq1}\frac{1}{2}(<w,x_{i}>-y_{i})^{2}]
+$$
+
+$$
+\nabla f(w)=\frac{1}{m}[\sum_{i:|<w,x_{i}>-y_{i}|\geq1}sign(<w,x_{i}>-y_{i})x_{i}+\sum_{i:|<w,x_{i}>-y_{i}|\leq1}(<x_{i},w>-y_{i})x_{i}]
+$$
+
+$$
+\frac{\partial f}{\partial w_{j}}=\frac{1}{m}[\sum_{i:|<w,x_{i}>-y_{i}|\geq1}sign(<w,x_{i}>-y_{i})x_{i_{j}}+\sum_{i:|<w,x_{i}>-y_{i}|\leq1}(<x_{i},w>-y_{i})x_{i_{j}}]
+$$
+
+$$
+\frac{\partial f}{\partial w_{k}w_{j}}=\frac{1}{m}[\sum_{i:|<w,x_{i}>-y_{i}|\leq1}x_{i_{k}}x_{i_{j}}]
+$$
+
+which is precisely continuous and so we conclude $f$ is twice differentiable.
+
+**Claim:**
+$\nabla f(w)\nabla^{2}f(w)\nabla f(w)\leq d^{2}||\nabla f(w)||_{2}^{2}$
+
+It is enough to consider the case where the LHS is positive. In particular we have
+
+$$
+\nabla^{2}f(w)\nabla(w)=\begin{bmatrix}\begin{array}{c}
+\sum_{j=1}^{d}(\nabla f(w))_{j}\frac{1}{m}[\sum_{i:|<w,x_{i}>-y_{i}|\leq1}x_{i_{1}}x_{i_{j}}]\\
+\sum_{j=1}^{d}(\nabla f(w))_{j}\frac{1}{m}[\sum_{i:|<w,x_{i}>-y_{i}|\leq1}x_{i_{2}}x_{i_{j}}]\\
+\vdots\\
+\sum_{j=1}^{d}(\nabla f(w))_{j}\frac{1}{m}[\sum_{i:|<w,x_{i}>-y_{i}|\leq1}x_{i_{d}}x_{i_{j}}]
+\end{array}\end{bmatrix}\leq^{*}\begin{bmatrix}\sum_{j=1}^{d}(\nabla f(w))_{j}d\\
+\sum_{j=1}^{d}(\nabla f(w))_{j}d\\
+\vdots\\
+\sum_{j=1}^{d}(\nabla f(w))_{j}d
+\end{bmatrix}
+$$
+
+where $\leq^{*}$ is elementwise inequality. This comes from the fact that $||x||_{2}\leq1\implies||x||_{1}\leq\sqrt{d}||x||_{2}=\sqrt{d}$ and $|x_{i_{j}}x_{i_{k}}|\leq\sum|x_{i_{j}}|\sum|x_{i_{k}}|\leq d$.
+
+Then we consider $(\nabla f)_{l}\sum(\nabla f)_{j}\leq\sum|(\nabla f)_{j}|\sum|(\nabla f)_{j}|\leq d||\nabla f||_{2}^{2}$ and so we have that
+
+$$
+\nabla f(w)\nabla^{2}f(w)\nabla f(w)\leq d\sum_{l}(\nabla f)_{l}\sum_{j}(\nabla f(w))_{j}\leq d^{2}||\nabla f||_{2}^{2}
+$$
+
+giving us our conclusion.
+
+# Squared loss function
+
+Here we consider the squared loss function $l$ and moreover we have that $\mathbb{E}[xx^{T}]\succcurlyeq uI$.
+
+### i)
+
+We show that the expectation of the empirical objective $L(w)=\frac{1}{t}\sum_{i=1}^{t}l(w,(x_{i},y_{i}))$ is $u$ strongly convex. We use the following lemma:
+
+**Lemma:**
+For twice differentiable $f$, $f$ is $\alpha$ strongly convex iff $x^{T}\nabla^{2}f(w)x\geq\alpha||x||^{2}$.
+
+We denote the function in question $f(w)=\mathbb{E}[L(w)]=\frac{1}{t}\sum_{i=1}^{t}\mathbb{E}[l(w,(x_{i},y_{i}))]=\frac{1}{2}\mathbb{E}[(y-w^{T}x)^{2}]$.
+
+**Claim:**
+$f(w)$ is twice differentiable.
+
+It is enough to show that the partials of second order are continuous. We note that
+
+$$
+\frac{\partial f}{\partial w_{i}}=-\mathbb{E}[(y-w^{T}x)x_{i}],\frac{\partial f}{\partial w_{j}\partial w_{i}}=-\mathbb{E}[-x_{i}x_{j}]=\mathbb{E}[x_{i}x_{j}]
+$$
+
+Then we have that
+
+$$
+\nabla^{2}f(w)=\mathbb{E}[xx^{T}]
+$$
+
+and by the positive definite assumption we have that for all $x$ that
+
+$$
+x^{T}(\mathbb{E}[xx^{T}]-uI)x\geq0\implies x^{T}\mathbb{E}[xx^{T}]x\geq u||x||_{2}^{2}
+$$
+
+and since we have
+
+$$
+x^{T}\nabla^{2}f(w)x\geq u||x||_{2}^{2}
+$$
+
+we assume conclude that the expectation of the empirical objective is $u$ strongly convex.
+
+### ii)
+
+We show that FTL is $2B$ on-average-replace-one-stable to give us an expectation learning guarantee.
+
+In particular, we have the following theorem (13.2) from Understanding Machine Learning Theory:
+
+**Theorem:**
+$\mathbb{E}_{S}[L_{D}(A(S))-L_{S}(A(S))]=\mathbb{E}_{(S,z'),i}[l(A(s^{(i)},z_{i})-l(A(S),z_{i})]$
+
+We can use this to give us a learning generalization guarantee if we know that it is on average replace one stable. We see for the non-negative squared loss function
+
+$$
+\mathbb{E}_{(S,z'),i}[l(A(s^{(i)},z_{i})-l(A(S),z_{i})]\leq\mathbb{E}_{(S,z'),i}[l(A(s^{(i)},z_{i})]
+$$
+
+and we note that for any $l(w,z_{i})=\frac{1}{2}(y_{i}-w^{T}x_{i})^{2}$ that we have the upper bound given the assumption that with probability $1$ that $||x||\leq1$ and $|y|\leq B$ that
+
+$$
+l(w,z_{i})\leq\frac{1}{2}|y_{i}-w^{T}x_{i}|^{2}\leq\frac{1}{2}(|y_{i}|+|w^{T}x_{i}|)^{2}\leq\frac{1}{2}(|y_{i}|+|w||x_{i}|)^{2}\leq2B
+$$
+
+and so we have the trivial upper bound
+
+$$
+\mathbb{E}_{(S,z'),i}[l(A(s^{(i)},z_{i})-l(A(S),z_{i})]\leq2B
+$$
+
+concluding that it is $2B$ stable.
+
+Then applying our theorem we get the following learning bound
+
+$$
+\mathbb{E}_{S}[L_{D}(A(S))-L_{S}(A(S))]\leq2B\implies\mathbb{E_{S}}[L_{D}(A(S))]\leq2B+\mathbb{E}_{S}[L_{S}(A(S))]
+
+
+$$
+
+# Learning sparse linear predictors
+
+Here we have the hypothesis class $$H^{k} = \{x \to <w,x> :\;||w||_{0}\leq k\} $$ of $$k$$ sparse linear predictors.
+
+We can show the hardness of learning $$k=\sqrt{n}$$ sparse linear predictors in the realizable case by showing a vertex cover reduction, since vertex cover is a NP-hard problem.
+
+Let us be given any graph $$G=(V,E)$$. We can arbitrarily enumerate the vertices and with this ordering one-hot encode all edges $$e=(u,v)$$ as $$\mathbb{R}^{|V|}$$ vector where the entry for $$u,v$$ is 1 and 0 everywhere else.
+
+Now we define $$v_{e}$$ as the one hot encoded vector and we let our
+data be $$(x_{i},y_{i})=(v_{e,}1)$$ all the encoded edges with label
+$$1$$.
+
+Let us denote the sub hypothesis class $$H_{+}^{k}=\{x\to<w,x>:w\succcurlyeq0\;\&\;||w||_{0}\leq k\}$$ i.e
+all the $$k$$ sparse predictors whose elements are precisely non-negative.
+We also follow the convention that $$sgn(0)=-1$$.
+
+Then the decision problem of vertex cover (i.e there exists a vertex
+cover of size at most $$k$$ vertices) is equivalent to the $$CONS_{H_{+}^{\sqrt{n}}}$$
+decision problem
+
+$$
+\exists w\succcurlyeq0\in\mathbb{R}^{n}:\forall i,\;w^{T}x*{i}>0
+$$
+
+We recognize that
+
+$$
+w^{T}x_{i}>0\iff y_{i}sgn(w^{T}x_{i})>0\iff CONS_{H_{+}^{\sqrt{n}}}=1
+$$
+
+and moreover that if such consistent $$w$$ exists that means that
+we can use the vertices corresponding to the positive entries to construct
+our cover and we have that every edge is incident to such vertex cover.
+Similarly, if no consistent $$w$$ exists, then we cannot construct
+a vertex cover, meaning that $$VCOVER=1\iff CONS_{H_{+}^{\sqrt{n}}}=1$$
+.
+
+Then, we simply recognize that the assumption of non-negative entries
+for our decision problem does not matter since
+
+$$
+\exists w\in H_{+}^{\sqrt{n}}:\forall i,\;w^{T}x_{i}>0\iff\exists w\in H^{\sqrt{n}}:\forall i,\;w^{T}x_{i}>0
+$$
+
+The forwards implication is trivial since any $\sqrt{n}$ sparse
+linear predictor with non-negative entries is a $\sqrt{n}$ sparse
+linear predictor and the backwards implication is true since if such
+$w$ exists then we can replace any negative entry to a non-negative
+entry and we get a $$w \succcurlyeq 0$$ such that $$\forall i\:w^{T}x*{i}$$.
+
+Then we have that $$CONS_{H^{\sqrt{n}}}=1\iff CONS_{H_{+}^{\sqrt{n}}}=1$$
+which means that the vertex cover decision problem
+
+$$
+VCOVER=1\iff CONS_{H^{\sqrt{n}}}=1
+$$
+
+which concludes our vertex cover reduction to the decision problem
+of whether there exists a consistent $\sqrt{n}$ sparse linear predictor
+which shows the hardness of learning $\sqrt{n}$ linear predictors
+in the realizable case.
+
+# Stability
+
+Here we are given that for any $$p\in(1,2]$$, $$\Psi(w)=||w||_{p}^{2}$$ is $$2(p-1)$$ strongly convex. We then show that RERM with a choice $$p,\lambda$$ can learn convex $$G$$ Lipschitz $$B$$ bounded problems.
+
+Since $$\Psi(w)$$ is $$2(p-1)$$ strongly convex, following the work in $4b)$ we can easily get that $$\lambda\Psi(w)$$ is $$2\lambda(p-1)$$ strongly convex. In particular, applying the $$\beta$$ stability result from $4a)$, we get a stability rate of
+
+$$\beta=\frac{4G^{2}}{2\lambda(p-1)m}$$
+
+which gives us the learning guarantee
+
+$$\mathbb{E}_{S}[L_{D}(A(S))]\leq inf_{||w||_{1}\leq B}L_{D}(w)+sup_{||w||_{1}\leq B}\lambda\Psi(w)+\frac{4G^{2}}{2\lambda(p-1)m}$$
+
+Now we pick our choice $$p=1+\frac{1}{logd}$$ where we note that assuming that $$d>e$$ that $$p\in(1,2)$$ and we also pick $$\lambda=\sqrt{\frac{G^{2}logd}{mB^{2}}}$$.
+Then our learning guarantee upperbound becomes
+
+$$inf_{||w||_{1}\leq B}L_{D}(w)+sup_{||w||_{1}\leq B}||w||_{p}^{2}\sqrt{\frac{G^{2}logd}{mB^{2}}}+\frac{4G^{2}logd}{2m}\sqrt{\frac{mB^{2}}{G^{2}logd}}$$
+
+$$=inf_{||w||_{1}\leq B}L_{D}(w)+sup_{||w||_{1}\leq B}||w||_{p}^{2}\sqrt{\frac{G^{2}logd}{mB^{2}}}+2\sqrt{\frac{G^{2}B^{2}logd}{m}}$$
+
+then by Minowski's we have that $$\forall w$$ $$||w||_{p}\leq||w||_{1}$$ and so
+
+$$\leq inf_{||w||_{1}\leq B}L_{D}(w)+B^{2}\sqrt{\frac{G^{2}logd}{mB^{2}}}+2\sqrt{\frac{G^{2}logdB^{2}}{m}}=inf_{||w||_{1}\leq B}L_{D}(w)+\sqrt{\frac{G^{2}B^{2}logd}{m}}+2\sqrt{\frac{G^{2}B^{2}logd}{m}}$$
+
+$$=inf_{||w||_{1}\leq B}L_{D}(w)+3\sqrt{\frac{G^{2}B^{2}logd}{m}}$$
+
+which gives us the desired form of
+
+$$\mathbb{E}_{S}[L_{D}(A(S))]\leq inf_{||w||_{1}\leq B}L_{D}(w)+O(\sqrt{\frac{G^{2}B^{2}logd}{m}})$$
