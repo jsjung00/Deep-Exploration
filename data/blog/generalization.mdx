@@ -14,6 +14,10 @@ In introductory statistics we are taught that our model should not overfit to th
 
 Yet the mystery is these adages go out the window when it comes to deep networks. Over-parameterized deep networks have significantly more trainable parameters than there are training samples, they can achieve zero training loss, and yet still show great generalization to the test data. How is this possible? How are these over parameterized and "over fitting" deep networks able to generalize?
 
+![Double descent](/static/images/double_descent.jpg)
+
+_Double descent: far enough into over-parameterized region, test performance increases_
+
 ## Implicit Regularization
 
 ### Norm minimization
@@ -46,7 +50,7 @@ So far we have only considered the setting of matrix sensing or matrix factoriza
 
 But what about non-linear deep networks?
 
-Unfortunately, the story is not so clear in the non-linear case. In fact, Vardi et al. 2021 show that even in a non-linear network with a single neuron, $$x \to \sigma(<w,x>)$$, when the activation function $$\sigma$$ is RELU, we cannot express a non-trivial implicit regularization function $$R$$ as a function of the parameters $$w$$.
+Unfortunately, the story is not so clear in the non-linear case. In fact, Vardi et al. 2021 show that even in a non-linear network with a single neuron, $$x \to \sigma(<w,x>)$$, when the activation function $$\sigma$$ is RELU, we cannot express a non-trivial (in fact non-constant) implicit regularization function $$R$$ as a function of the parameters $$w$$.
 
 ### Non-infinitesimal initialization?
 
@@ -62,9 +66,23 @@ In short, this incremental convergence of singular values under gradient descent
 
 ### Unpacking this idea
 
-One way to gain intuition is thinking about truncated singular value decomposition. We know from SVD any complex matrix $$W$$ can be decomposed into a sum of rank-1 matrices $$\sum_{i=1}^{r} \sigma_{i} \boldsymbol{u}_{i} \boldsymbol{v}_{i}$$ where $$r$$ is the rank of $$W$$. Here, we can order the singular values by size, where $$\sigma_{1} \geq \sigma_{2}... \geq \sigma_{r}$$. The idea behind truncated SVD is that the smaller singular values capture finer details while the larger singular values capture more broad stokes signals; thus by having the first $$k < r$$ singular values $$\sum_{i=1}^{k} \sigma_{i} \boldsymbol{u}_{i} \boldsymbol{v}_{i}$$ we get a coarse approximation of our matrix $$W$$.
+One way to gain intuition is thinking about truncated singular value decomposition. We know from SVD any complex matrix $$W$$ can be decomposed into a sum of rank-1 matrices $$\sum_{i=1}^{r} \sigma_{i} \boldsymbol{u}_{i} \boldsymbol{v}_{i}$$ where $$r$$ is the rank of $$W$$. Here, we can order the singular values by size, where $$\sigma_{1} \geq \sigma_{2}... \geq \sigma_{r}$$.
+The idea behind truncated SVD is that the smaller singular values capture finer details while the larger singular values capture more broad stokes signals; thus by having the first $$k < r$$ singular values $$\sum_{i=1}^{k} \sigma_{i} \boldsymbol{u}_{i} \boldsymbol{v}_{i}$$ we get a coarse approximation of our matrix $$W$$.
 
-Back to our setting, since our model has the singular values converge one at a time, it initially only captures coarse signals but over time captures finer signals as the singular values converge. Solutions that gradually increase complexity tend to generalize better. To see this we might consider the filters in a CNN; the first few filters learn general broad strokes patterns and the later filters more precise patterns. This kind of coarse-to-complex learning allows for robustness, in comparison to a model that possibly learns/memorizes nuanced fine details (or noise) from the get-go from the training images, presenting a risk of bad overfitting.
+<p align="center">
+  <img src="/static/images/singular_values.png" alt="Singular Values" width="500" />
+</p>
+
+_Singular values: large singular values capture signal, small singular values might capture noise_
+
+Back to our setting, since our model has the singular values converge one at a time, it initially only captures coarse signals but over time captures finer signals as the singular values converge. Solutions that gradually increase complexity tend to generalize better.
+To see this we might consider the filters in a CNN; the first few filters learn general broad strokes patterns and the later filters more precise patterns. This kind of coarse-to-complex learning allows for robustness, in comparison to a model that possibly learns/memorizes nuanced fine details (or noise) from the get-go from the training images, presenting a risk of bad overfitting.
+
+<p align="center">
+  <img src="/static/images/cnn_filters.png" alt="CNN filters" width="500" />
+</p>
+
+_CNN filter visualization: early filters detect broad patterns, later filters detect finer patterns_
 
 To summarize, incremental learning might explain the generalization properties of (certain) deep networks, because even though the hypothesis class (set of possible functions) of deep networks is huge, gradient descent finds solutions that increase in complexity gradually, which are better for generalization.
 
