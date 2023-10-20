@@ -12,7 +12,7 @@ summary: A brief overview covering implicit bias and incremental learning
 
 In introductory statistics we are taught that our model should not overfit to the training set to avoid poor generalization and consequent poor test data performance. In line with this, some suggestions are to use a model with fewer parameters and also to consider explicit regularization of the weights, such as constraining the norm or the rank.
 
-Yet the mystery is these adages go out the window when it comes to deep networks. Over-parameterized deep networks have significantly more trainable parameters than there are training samples, they can achieve zero training loss, and yet still show great generalization to the test data. How is this possible? How are these over parameterized and "over fitting" deep networks able to generalize?
+Yet the mystery is that these adages go out the window when it comes to deep networks. Over-parameterized deep networks with significantly more trainable parameters than there are training samples and with zero training loss still show great generalization to the test data. How is this possible? How are these over-parameterized and "over fitting" deep networks able to generalize?
 
 ![Double descent](/static/images/double_descent.jpg)
 
@@ -24,7 +24,8 @@ _Double descent: far enough into over-parameterized region, test performance inc
 
 One hypothesis posits that generalization comes not from characteristics of the model class but rather from the optimization process.
 
-Specifically, Gunaseka et al. 2017 (from TTIC with Nathan Srebo) states that in the linear network setting, gradient descent leads to a solution that has minimal nuclear norm (sum of singular values). More precisely, they assume gradient descent with infinitesimal step sizes (aptly termed gradient flow) and an initialization arbitrarily close to zero. They consider the **matrix sensing** optimization problem: we wish to recover some unknown matrix $$W^*$$ given some linear measurements $$y_i = <A_i, W^*> = tr(A_i^T  W^*)$$ and given matrices $$A_i$$.
+Specifically, Gunaseka et al. 2017 (from TTIC with Nathan Srebo) states that in the linear network setting, gradient descent leads to a solution that has minimal nuclear norm (sum of singular values).
+More precisely, they assume gradient descent with infinitesimal step sizes (aptly termed **gradient flow**) and an initialization arbitrarily close to zero. They consider the **matrix sensing** optimization problem: we wish to recover some unknown matrix $$W^*$$ given some linear measurements $$y_i = tr(A_i^T  W^*) = <A_i, W^*> $$ and given matrices $$A_i$$.
 
 In their set up they constrain the domain to the matrix factorization $$W = U U^T$$. Gradient descent is then applied for the least squares minimization problem:
 
