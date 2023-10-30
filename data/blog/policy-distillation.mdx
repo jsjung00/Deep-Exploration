@@ -1,0 +1,87 @@
+---
+title: (Research Idea) Transformer-Based Multi-Task RL with Policy Distillation
+date: '2023-10-19'
+tags: ['reinforcement-learning', 'research']
+draft: false
+summary: A research proposal to improve offline learning using novelty driven policy distillation
+---
+
+---
+
+## Introduction
+
+Transformer based models, such as large language models, have shown great success
+and impact in multiple industries such as law, finance, retail, and healthcare.
+Some household examples are ChatGPT for text generation and Dall-E for image
+generation. Transformer based models also show significant promise in
+reinforcement learning (RL). Reinforcement learning has many use cases, such as in
+robotics with autonomous manufacturing robots or autonomous vehicles. One
+challenge reinforcement learning algorithms face is the “deadly triad” problem,
+where combination of function approximation, bootstrapping, and off-policy
+learning makes RL unstable. Chen et al.[1] show that transformers overcome this
+problem with their ability to model long sequences with self-attention and to
+perform credit assignment without bootstrapping. Moreover, due to its flexibility
+in modeling various distributions, transformer models have shown to better
+generalize to new data distributions and better transfer to new environments
+compared to other RL algorithms.
+
+However, the application of transformers in reinforcement learning is limited due
+to the immense model size of transformers, leading to costly and slow inference.
+Knowledge distillation, first introduced by Hinton et al.[2], is a common technique
+used to reduce the size of a model. Rusu et al.[3] apply knowledge distillation in RL,
+where a much smaller policy network learns from much larger networks in the DQN
+setting. Reinforcement learning more generally also faces some bottlenecks that
+prevent its applicability to the real world. Two big challenges are namely lack of
+data and lack of coverage of the state space while learning. To overcome the lack
+of high-fidelity demonstration data, multi-task learning is one solution, where
+data on similar tasks are leveraged. Additionally, to overcome the lack of
+coverage of the state space, one method is random network distillation, which
+offers an exploration bonus for visiting more novel states.[4]
+
+## Proposal
+
+We could possibly alleviate the aforementioned challenges of model size, lack of
+data, and sufficient state coverage through novelty driven multi-task policy
+distillation. Rusu et al.[3] show the promise of multi-task policy distillation
+through results obtained in a DQN setting. However, in their work, the distilled
+smaller (student) model learns from different agents (teachers) by cycling
+through different task data stores in some arbitrary fixed order. Similarly,
+Tseng et al.[5] shows the promise of policy distillation in a multi-agent learning
+framework; however, the centralized agent simply learns using data of all the
+agents all at once. Our hypothesis is that data from various teachers are not all
+equal. Rather, a well-constructed order of which teacher to learn from can improve
+learning with a more diverse curriculum.
+
+To describe the set up more concretely, we have $n$ tasks and $n$ corresponding offline
+datasets. For each task dataset, we learn a policy using a transformer model as
+described in Chen et al.[1] We then distill knowledge from the $n$ teacher policies
+into a student by learning a policy that aligns with each teacher policy on their
+corresponding dataset. To determine which teacher the student learns from, the
+student finds the teacher that it is most different from, or more formally written
+as: $$argmax_{i \in [n]} KL(\pi(\cdot | s) || \pi_{stud}(\cdot | s)$$. The motivating intuition is that each teacher, trained on a unique task,
+will impart knowledge based on that unique task. The more the student learns from
+a particular teacher, the more familiar it becomes with knowledge derived from
+task data corresponding to the teacher. To be well balanced, the student should
+next learn knowledge that they are least familiar with. By seeking out knowledge
+from the teacher that they are most unfamiliar with, our student model learns
+through a diverse and robust curriculum.
+
+We would run our method on various environments such as D4RL and MetaWorld and
+quantify improvements on various benchmarks. In addition, there are important
+ablations that would be considered. First, we would tune how long the student
+should learn from a teacher before moving on to another teacher. Second, the
+student model is significantly smaller for fast inference; however, there are
+multiple methods to reduce transformer model size and improve inference speed. We
+would compare transformer model compression methods such as quantization, pruning,
+and low rank factorization to see which techniques are most amenable with
+multi-task policy distillation.
+
+## References
+
+[1] Chen, L., Lu, K., Rajeswaran, A., Lee, K., Grover, A., Laskin, M., Abbeel, P., Srinivas, A., & Mordatch, I. (2021). Decision Transformer: Reinforcement Learning via Sequence Modeling. arXiv preprint arXiv:2106.01345.
+
+[2] Hinton, G., Vinyals, O., & Dean, J. (2015). Distilling the Knowledge in a Neural Network. arXiv preprint arXiv:1503.02531.
+
+[3] Rusu, A. A., Colmenarejo, S. G., Gulcehre, C., Desjardins, G., Kirkpatrick, J., Pascanu, R., Mnih, V., Kavukcuoglu, K., & Hadsell, R. (2016). Policy Distillation. arXiv preprint arXiv:1511.06295.
+
+[4] Burda, Y., Edwards, H., Storkey, A., & Klimov, O. (2018). Exploration by Random Network Distillation. arXiv preprint arXiv:1810.12894.
