@@ -1,0 +1,51 @@
+---
+title: (WIP) Goodfellow's Deep Learning- Second Pass Notes
+date: '2023-8-07'
+tags: ['notes', 'machine-learning']
+draft: false
+summary: Second pass notes on Ian Goodfellow's Deep Learning textbook
+---
+
+# Deep Learning: Second Pass Notes
+
+## Intro
+
+I really enjoyed reading Deep Learning by Goodfellow; it was one of the more helpful references when I was learning machine learning concepts. While I have read through this book once, there are parts that I have glossed over or did not fully internalize. I am sharing those less internalized snippets that I got from my second read here. While this is more of a collection of notes, hopefully there are some useful ideas for the reader as well.
+
+## Linear Algebra
+
+**Def:** A matrix $$A$$ is an orthogonal matrix if all the rows are mutually orthonormal and all the columns are mutually orthonormal, equivalently $$A^{T}A=A^{T}A=I$$.
+
+### Eigendecomposition
+
+Every real symmetric matrix $$A$$ can be eigendecomposed with orthogonal matrices, i.e. $$A=Q\Lambda Q^{T}$$.
+
+## Information Theory
+
+The guiding three principles for an information metric:
+
+1. Events with probability 1 should have zero info.
+2. Less likely events should have higher info.
+3. Independent events have additive info.
+
+We define information as $$I(x)=-\log P(x)$$.
+
+**Def:** The Shannon Entropy is the expected information of a distribution, i.e $$H(X)=\mathbb{E}_{X\sim P}[I(X)]=-\mathbb{E}_{X\sim P}[\log P(X)]$$.
+
+We can see that for distributions that have a high chance of being a particular value (or more generally whose probability mass collapses for a small region), there is a low Shannon entropy, i.e the distribution gives little info. But on the other hand, if the distribution is quite random (say uniform across the domain), then we have high unexpectedness and thus a high Shannon entropy.
+
+**Def:** KL divergence measures the "distance" between two distributions, defined by $$KL(P||Q)=\int p(x)\log\frac{p(x)}{q(x)}$$.
+
+### Asymmetry of KL divergence
+
+KL divergence is not a metric, but symmetry does not necessarily hold, as in $$KL(P||Q) \ne KL(Q||P)$$ for some distributions.
+
+### How to understand KL divergence from hypothesis testing?
+
+We have the definition $$KL(P||Q)=\int p(x)\log\frac{p(x)}{q(x)}$$.
+
+We can see a likelihood ratio $$\frac{p(x)}{q(x)}$$. In fact, let us consider the hypothesis test with $$H_{0}:P$$ is the distribution of the data and $$H_{A}:Q$$ is the distribution of the data. We see that the $$KL(P||Q)$$ simply measures the expected log likelihood under the null hypothesis. So if this value is very large, we might be induced to not reject the null.
+
+We can then consider $$KL(Q||P)$$ and the hypothesis test $$H_{0}:Q$$ and $$H_{A}:P$$ is the distribution of the data. What we see is that this value can be different than before (such as in the case of comparing a $$t_{1}$$ distribution and a normal distribution), which is precisely why we can have asymmetry of KL divergence.
+
+_Note to self:_ I still don't quite understand the connection well.
