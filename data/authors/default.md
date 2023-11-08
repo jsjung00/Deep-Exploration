@@ -27,4 +27,4 @@ I am also a big believer in intuition- both in understanding and in explanation-
 ---
 
 In my free time, I enjoy reading, karaoke, and spending time outdoors.  
-📖: Currently learning about multimodality
+📖: Currently learning about RL Theory
