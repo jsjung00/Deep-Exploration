@@ -1,0 +1,50 @@
+---
+title: ML Notes (Part 3- RL)
+date: '2022-07-13'
+tags: ['reinforcement-learning', 'notes']
+draft: true
+summary: RL concepts I hope to understand and explain intuitively
+---
+
+## Questions and concepts related to reinforcement learning
+
+1. Exploitation and Exploration (8.2.3.1)
+
+   I was once asked if I knew what exploitation and exploration was referring to- I had no idea at the time, and so gave a pretty sheepish answer.
+   However, it's not a difficult concept- the name explains itself. Say you go to a casino and each slot machine has a different expected payout. Obviously you want to find the machine with
+   the highest payout per roll- however, you don't know this info before hand and in order to calculate a good estimation of the mean payout you have
+   to record many rolls of a machine. Now if you chose one machine and simply rolled that machine all night, you'd get a good estimate of the expected payout.
+   And if that machine (in some twisted universe) turns out to be _profitable_, you might think of just sticking to that machine.
+   But there could be any machine out there that has twice the expected payout. In order to find that machine however, you'd have to try other machines, using
+   valuable rolls that you could be making some profit with.
+
+   This decision calculus encapsulates the idea of **exploitation vs exploration**- if you find a winning strategy, you can keep exploiting it. On the other hand,
+   you can spend some effort/cost searching for more profitable strategies which may pay off the initial search investment- exploring better strategies.
+
+2. How would a finite or infinite horizon affect our algorithms? (8.2.3.2)
+
+   I took a really great economics class which looking back actually introduced a fair number of RL concepts, one of them being finite-infinite horizon timer period consumer models.
+   Consumers make the tradeoff between spending/enjoying utility from their consumpion $$u(c_t)$$ and saving, which will grow their savings/capital stock
+   by a factor of $$f'(w_t)$$.
+   A finite-horizon consumer model models the fact that consumers will die one day, and any left over money will have no utility.
+   Thus, this model enforces a particular boundary condition in the optimization problem, where the consumer spends all the cash he has saved in his last year of life
+   and saves none, enjoying a utility of $$u(w_t)$$.
+
+   On the other hand, the optimization problem is different under the assumption of an infinite horizon model- in the context of the consumer, we could image that he
+   lives forever or more realistically that he derives utility when his children get utility from consuming his savings post his death.
+
+   **Further ideas**: Revisit solving value functions or bellman equations.
+
+3. Minimax algorithm (8.2.3.4)
+
+   I once heard someone explain how the cuththroat parents from his prestigious prep school viewed college applications as a minimax problem. I didn't really understand
+   what he was talking about but I remember thinking that what he said sounded cool.
+
+   INCORRECT-FIX AFTER LEARNING
+   At its core, minimax is a game strategy for a alternating zero sum game (ex: chess, tic tac toe) where one player looks to get the maximum score (i.e win with the
+   highest likelihood) and the other looks to get the minimum score (i.e force the other play to lose with the highest likelihood).
+
+   For example, if it's the maximizer's turn, he wants to choose the action that will lead to the highest possible score given that in the next turn the minimizer will
+   force the minimum score for each action.
+   In other words the maximizer chooses action  
+   $$a_i^* = argmax_{a_i} \: min_{a_{i_o}} v(a_i, a_{i_o})$$ where $$a_{i_o}$$ are the actions of all the other players.
