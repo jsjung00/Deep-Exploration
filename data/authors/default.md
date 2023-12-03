@@ -16,8 +16,6 @@ I graduated from the University of Chicago in 2023, where I studied Computationa
 I am a firm advocate of a growth and learning mindset.
 I am also a big believer in intuition- both in understanding and in explanation- and hope to share some of the things that I’ve learned here.
 
-**Note:** I am actively seeking full time job opportunities.
-
 ---
 
 **Graduate Coursework**: Statistical Learning Theory (PhD), Machine Learning (PhD), Topics in ML: Learning and Game Theory, Big Data and Economic Applications, Data Science and Econometric Applications, Non-Parametric Inference, Machine Learning and Large Scale Data Analysis
@@ -27,4 +25,4 @@ I am also a big believer in intuition- both in understanding and in explanation-
 ---
 
 In my free time, I enjoy reading, karaoke, and spending time outdoors.  
-📖: Currently learning about RL Theory
+📖: Currently learning about safety, RL theory
