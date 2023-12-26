@@ -24,5 +24,7 @@ I am also a big believer in intuition- both in understanding and in explanation-
 
 ---
 
+I believe good programming is an important lower bound. I am ranked 6 star gold (highest level) in HackerRank algorithmic problem solving.
+
 In my free time, I enjoy reading, karaoke, and spending time outdoors.  
 📖: Currently learning about safety, RL theory
