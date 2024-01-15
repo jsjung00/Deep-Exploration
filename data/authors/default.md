@@ -25,4 +25,4 @@ I am also a big believer in intuition- both in understanding and in explanation-
 ---
 
 In my free time, I enjoy reading, karaoke, and spending time outdoors.  
-📖: Currently learning about generalization and safety
+📖: Currently learning about representation learning, generalization
