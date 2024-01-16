@@ -114,7 +114,7 @@ function App() {
         { name: 'Falcon Dai' },
         { name: 'Matthew Walter' },
       ],
-      conference: 'ICLR 2024 (In Review)',
+      conference: 'NeurIPS 2023 GenPlan Workshop',
       projectLink: 'https://arxiv.org/abs/2309.04459',
       description:
         'A novel approach to skill-generation in sparse-reward reinforcement learning by discretizing the action space through clustering and leveraging tokenization techniques, which significantly outperforms existing methods in challenging domains while reducing computation requirements.',
