@@ -1,3 +1,13 @@
+---
+title: Knowing when we don't know- uncertainty quantification of large language models
+date: '2023-10-15'
+tags: ['uncertainty-quantification', 'LLM', 'research']
+draft: false
+summary: Background on discrete diffusion and a proposed diffusion method for inverse protein folding
+---
+
+---
+
 ## Motivation
 
 Large language models are used in all kinds of settings, from healthcare to robotics.
