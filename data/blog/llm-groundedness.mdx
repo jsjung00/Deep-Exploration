@@ -1,0 +1,220 @@
+---
+title: Evaluating LLMs (Part 2)- Evaluating the Groundedness of LLM Output Through Causally Similar Augmentations
+date: '2023-10-18'
+tags: ['uncertainty-quantification', 'LLM', 'research']
+draft: false
+summary: Proposed method of quantifying uncertainty of LLMs
+---
+
+---
+
+## Introduction and Motivation
+
+Given the ubiquity of large language models (LLMs), an important
+question is how to evaluate the trustworthiness of an output of a LLM.
+In the more general deep network setting, research on adversarial
+machine learning shows how non-robust deep network outputs can be. For
+example, changing just one pixel in an image can flip the classification
+of the image. Representation learning is related to robust predictions;
+by learning representations that extract useful features and ignore
+useless features (say extract parts of the plane versus the blue sky
+background from an image of a flying airplane), we can better generalize
+and allow for better predictions on data with different useless features
+(i.e a purple sky background). Contrastive learning is a self-supervised
+technique used to learn better representations. The high level idea is
+that given an image (denoted as an anchor), images similar to the anchor
+should have a similar representation to the anchor representation
+whereas images dissimilar to the anchor should have a dissimilar
+representation to the anchor representation. One way to get images
+similar to an anchor, as done in the popular SimCLR method by (Chen et
+al. 2020), is to apply a bunch of data augmentation transformations to
+the anchor image.
+
+Inspired by the data augmentation step in contrastive learning and
+representation learning for generalization more broadly, we propose a
+method to evaluate how grounded the output of an LLM is in the causal
+information of a given context (in practice the context might be defined
+by RAG). Here we denote causal information to mean necessary information
+that a reasonable output to the prompt logically follows from. We
+augment the context and generate "copies" of the context through
+augmentations that preserve the causal information of the original
+context. Then, we consider the similarity of the distribution of the
+output induced by original context to the distribution of the output
+induced by the augmented contexts to measure how logically grounded the
+output is in the causal information of the original context. The idea is
+that if the context contains sufficient causal information to generate a
+reasonable output logically grounded in such causal info _and_ the
+output is indeed logically grounded in such causal info, (assuming that
+the augmented contexts preserve such causal info) the output should
+logically follow from the augmented contexts. Otherwise, if the output
+was not logically grounded in the causal info of the context, then the
+output should not logically follow from the augmented contexts. We
+measure the groundedness of the output of the prompt through the
+similarities of the distribution of the output induced by the anchor
+context to the distribution of the output induced by the augmented
+context copies.
+
+## Problem Setting
+
+Given a large language model $p_{\theta}$, some prompt $x_{0}$,
+corresponding retrieved context $c_{0}$ which should be used to answer
+the prompt, and answer $y_{0}=p_{\theta}(x_{0})$ we want to evaluate how
+much our answer $y_{0}$ is logically grounded in the causal information
+of $c_{0}$. We say an output is (logically) grounded in some causal
+information if the output is a logical consequence of the causal
+information. To emphasize, the causal information must have a logical
+bearing on the output- high "salience" tokens would not count for
+example.
+
+## Method
+
+To evaluate the groundedness of our answer $y_{0}$ in the causal
+information of the retrieved context $c_{0}$, we apply a set of
+augmentation transformations $T$ to the context $c_{0}$ to get augmented
+copies $\{c_{t}\}_{t\in T}$ for each transformation $t\in T$. Each
+transformation is defined such that it changes the vocabulary of $c_{0}$
+(i.e we get different phrases) but preserves the logical meaning and
+more importantly the causal information. One way of doing this might be
+to ask a language model to re-word a particular sentence or paragraph
+while keeping the meaning intact.
+
+We now consider the following four scenarios which motivate our measure
+of groundedness. For the first three, we assume that the retrieved
+context contains causal information to generate a reasonable output that
+can be grounded in or based on such causal info, whereas for the fourth
+case we assume not. (In the fourth case, an output in the setting of a
+useless context with no causal information, such as a political affairs
+document for a question about chemistry, could not be both a reasonable
+response to the prompt _and_ grounded in the useless context.)
+
+Case 1: The augmented contexts $\{c_{t}\}$ preserve the causal
+information of the context and the output $y_{0}$ on the original
+context is well-grounded in the causal information.
+
+Case 2: The augmented contexts $\{c_{t}\}$ preserve the causal
+information of the context and the output $y_{0}$ on the original
+context is not grounded in the causal information.
+
+Case 3: The augmented contexts $\{c_{t}\}$ do not preserve the causal
+information of the context $c_{0}$.
+
+Case 4: The original context $c_{0}$ does not contain causal information
+that a reasonable output could be grounded in.
+
+<figure>
+
+<figcaption>Solid lines signify a causal relation between output and
+context; dotted signify no relation. <img
+src="C:/Users/justi/Downloads/45852" alt="image" /></figcaption>
+</figure>
+
+The figure illustrates the different cases. In Case 1 where the output
+is grounded in the original context and the augmented contexts preserve
+the causal information, we see that the output is causally determined by
+the augmented contexts. In Case 2 where the output is not grounded in
+the context (ex: the output depends on tokens that have no logical
+bearing and possibly do not exist in the other augmented contexts), we
+see no causal relationship between the output and the augmented
+contexts. This is also true in Case 3 where the augmented contexts do
+not preserve the causal information of the original context. However, we
+expect this case to not be a problem since we assume that for the most
+part the generated augmented contexts preserve the logical meaning of
+the original contexts. Given this assumption, we can simply average over
+any degenerate augmented contexts. In Case 4 where the original context
+has no causal information to ground the output in, we see that there is
+no causal relation between the output and the augmented contexts.
+
+The only desired scenario is Case 1 (augmented contexts preserve causal
+information and the output is grounded in the context) and we see that
+Case 1 is the only scenario where there is a causal relationship between
+the output and the augmented contexts. Based on this insight, we can
+detect whether an output is logically grounded in the context if there
+are causal relations between the augmented contexts and the output.
+Intuitively if there is a casual relation between an augmented context
+and the output, then the model can "recover" so to speak the output as
+it follows the causal inforformation in the augmented context; moreover
+we posit that the model should "recover" the distribution of the output
+induced by the original context. Specifically, we measure the average
+divergence between the distribution of the output induced by the
+original context and the distributions of the output induced by the
+various augmented context or
+$$\sum_{t\in T}KL[p(y_{0}|x_{0},c_{0})\;||\ p(y||x_{0},c_{t})]$$ Whereas
+(Caron et al. 2021) choose cross entropy as a their measure of fit
+between pairs of augmentations, we choose the KL diveregence as we are
+solely interested in a measure of the divergence of the distributions
+that is irrespective of the entropy of the original distribution
+$H(p(y_{0}|x_{0},c_{0}))$. We note that $KL(p||q)=H(p)+H(p,q)$ where
+$H(p,q)$ is the cross entropy of the two distributions.
+
+In order to use our metric to quantify the level of groundedness of the
+output in the context (and not variations due to other factors such as
+whether the augmented contexts preserve the causal info or whether the
+context contains causal info for a reasonable output), we would want to
+ensure that our setting has a context with casual infomation and that
+the augmented contexts preserve the causal infomation.
+
+## Summary and Further Work
+
+We measured how grounded the output of a LLM is based on a given context
+using augmented contexts. In order to utilize this method in practice,
+we would need to devise augmentations that preserve the logical meaning
+of the context- measuring logical preservation would require further
+investigation. We could improve on the method if we also chose
+particular augmented contexts; for example, building on the work of
+measuring "salience maps" in the transformer setting, we might consider
+augmenting the original contexts by imputing highly salient tokens with
+logical synonyms to "adversarially" generate augmentations which tease
+out whether an output is causally related to an augmented context.
+
+We also make the assumption that if the output causally follows from the
+augmented context, then the model should be able to recover the
+distribution of the output induced by the original context. Alternately,
+we could choose to measure the likelihood of the output given the
+augmented context, since if the augmented context has the causal
+information that generated the output then the model should be able to
+predict the output with high probability.
+
+Moreover, our measurement takes an average over all transformations for
+enough transformations to assume that in the case of some degenerate
+augmented contexts that do not preserve the causal information of the
+original context, we can simply "average over" those degenerate signals.
+We might be able to improve our measurement by noting that not all
+transfomations should be weighted equally. In fact, in cases where the
+augmented context does not preserve the causal information, there is no
+causal relation between the original context $c_{0}$ and the output
+$y_{T_{t}}$ generated from the augmented context $c_{T_{t}}$. In
+contrast, if the augmented context does preserve causal information,
+then there is a causal relation between the original context $c_{0}$ and
+the generated output $y_{T_{t}}$(assuming that the model generates
+$y_{T_{t}}$ grounded in context $c_{T_{t}}$, which we assume happens
+often). We can then get a modified weighted measurement
+$$\sum_{t\in T}w_{t}KL[p(y_{0}|x_{0},c_{0})\;||\ p(y||x_{0},c_{t})]$$
+where our weight is defined as
+$$w_{t}=KL[p(y_{t}|x_{0},c_{t})\;||\ p(y_{t}||x_{0},c_{0})]$$
+
+## References
+
+- Amy Zhang, Rowan McAllister, Roberto Calandra, Yarin Gal, and Sergey
+  Levine. 2020. Learning Invariant Representations for Reinforcement
+  Learning without Reconstruction. arXiv preprint arXiv:2006.10742.
+
+- Andy Zou, Long Phan, Sarah Chen, James Campbell, Phillip Guo,
+  Richard Ren, Alexander Pan, Xuwang Yin, Mantas Mazeika, Ann-Kathrin
+  Dombrowski, Shashwat Goel, Nathaniel Li, Michael J. Byun, Zifan
+  Wang, Alex Mallen, Steven Basart, Sanmi Koyejo, Dawn Song, Matt
+  Fredrikson, J. Zico Kolter, and Dan Hendrycks. 2023. Representation
+  Engineering: A Top-Down Approach to AI Transparency. arXiv preprint
+  arXiv:2310.01405.
+
+- Manan Tomar, Amy Zhang, Roberto Calandra, Matthew E. Taylor, and
+  Joelle Pineau. 2023. Model-Invariant State Abstractions for
+  Model-Based Reinforcement Learning. arXiv preprint arXiv:2102.09850.
+
+- Mathilde Caron, Ishan Misra, Julien Mairal, Priya Goyal, Piotr
+  Bojanowski, and Armand Joulin. 2021. Unsupervised Learning of Visual
+  Features by Contrasting Cluster Assignments. arXiv preprint
+  arXiv:2006.09882.
+
+- Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geoffrey
+  Hinton. 2020. A Simple Framework for Contrastive Learning of Visual
+  Representations. arXiv preprint arXiv:2002.05709.
