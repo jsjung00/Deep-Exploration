@@ -146,6 +146,11 @@ that is irrespective of the entropy of the original distribution
 $H(p(y_{0}|x_{0},c_{0}))$. We note that $KL(p||q)=H(p)+H(p,q)$ where
 $H(p,q)$ is the cross entropy of the two distributions.
 
+For simplicity, we can also simply consider the likelihood of the output given the
+augmented context, since if the augmented context has the causal
+information that generated the output then the model should be able to
+predict the output with high probability.
+
 In order to use our metric to quantify the level of groundedness of the
 output in the context (and not variations due to other factors such as
 whether the augmented contexts preserve the causal info or whether the
@@ -168,11 +173,7 @@ out whether an output is causally related to an augmented context.
 
 We also make the assumption that if the output causally follows from the
 augmented context, then the model should be able to recover the
-distribution of the output induced by the original context. Alternately,
-we could choose to measure the likelihood of the output given the
-augmented context, since if the augmented context has the causal
-information that generated the output then the model should be able to
-predict the output with high probability.
+distribution of the output induced by the original context.
 
 Moreover, our measurement takes an average over all transformations for
 enough transformations to assume that in the case of some degenerate
