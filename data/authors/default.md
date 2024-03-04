@@ -1,8 +1,8 @@
 ---
 name: Justin Jung
 avatar: /static/images/headshot_justin_lighting.jpg
-occupation: Computational Applied Math, Statistics, Economics '23
-company: University of Chicago
+occupation: Research Scientist
+company: Springtail.ai
 email: justinsoljung@gmail.com
 //twitter: https://twitter.com/Twitter
 linkedin: https://www.linkedin.com/in/justin-jung-420394111
@@ -11,7 +11,9 @@ github: https://github.com/jsjung00
 
 **About Me**
 
-I graduated from the University of Chicago in 2023, where I studied Computational Applied Math (BS), Statistics (BS), and Economics (BA) with specializations in Machine Learning and Data Science.
+I am a research scientist at Springtail.ai working on improving transformers through active learning.
+
+Previously I graduated from the University of Chicago in 2023, where I studied Computational Applied Math (BS), Statistics (BS), and Economics (BA). During that time, I also studied machine learning theory and did machine learning research at the Toyota Technical Institute of Chicago.
 
 I am a firm advocate of a growth and learning mindset.
 I am also a big believer in intuition- both in understanding and in explanation- and hope to share some of the things that I’ve learned here.
@@ -24,5 +26,5 @@ I am also a big believer in intuition- both in understanding and in explanation-
 
 ---
 
-In my free time, I enjoy reading, karaoke, and spending time outdoors.  
-📖: Currently learning about representation learning, generalization
+In my free time, I enjoy singing, learning about other people's stories (ex: through memoirs), and leisurely walks.  
+📖: Currently learning about conformal prediction, representation learning
