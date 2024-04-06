@@ -13,7 +13,7 @@ github: https://github.com/jsjung00
 
 I am a research scientist at Springtail.ai researching methods to improve transformer learning sample efficiency.
 
-While currently it might seem like scalability is the only thing that matters, I believe that true intelligence arises when learning to generalize under the constraint of limited samples. Thus, I am personally excited by sample efficient learning.
+While currently there is a lot of focus on scalability, I believe that true intelligence comes from learning to generalize under the constraint of limited samples and so am personally excited by sample efficient learning.
 
 ---
 
