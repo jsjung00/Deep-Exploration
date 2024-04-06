@@ -13,16 +13,14 @@ github: https://github.com/jsjung00
 
 I am a research scientist at Springtail.ai researching methods to improve transformer learning sample efficiency.
 
-Previously I graduated from the University of Chicago in 2023, where I studied Computational Applied Math (BS), Statistics (BS), and Economics (BA). During that time, I also studied machine learning theory and did machine learning research at the Toyota Technical Institute of Chicago.
-
-I am a firm advocate of a growth and learning mindset.
-I am also a big believer in intuition- both in understanding and in explanation- and hope to share some of the things that I’ve learned here.
+While scalable learning algorithms are taking over, I believe that true intelligence arises when learning to generalize under the constraint of limited samples and so am personally excited about sample efficient learning.
 
 ---
 
-**Graduate Coursework**: Statistical Learning Theory (PhD), Machine Learning (PhD), Topics in ML: Learning and Game Theory, Big Data and Economic Applications, Data Science and Econometric Applications, Non-Parametric Inference, Machine Learning and Large Scale Data Analysis
+Previously I graduated from the University of Chicago, where I studied Computational Applied Math, Statistics, and Economics. During that time, I also studied machine learning theory and did machine learning research at the Toyota Technical Institute of Chicago.
 
-**Select Undergraduate Coursework**: Honors Graph Theory, Honors Discrete Mathematics, Optimization, Accelerated Real Analysis, Algorithms, Markov Chains, Theory of ODE's, Robotics
+Personally, I am a firm advocate of a growth and learning mindset.
+I am also a big believer in intuition- both in understanding and in explanation- and hope to share some of the things that I’ve learned here.
 
 ---
 
