@@ -59,8 +59,9 @@ results from the reverse process should match the distribution of the
 real data. An intuitive objective is to maximize the likelihood of the
 real data $x_{0}$ under the learned reverse distribution. Because
 maximizing the likelihood directly is intractable, we maximize a
-variational lower bound of the negative log likelihood
-$\mathbb{E}_{q(x_{0})}[-logp_{\theta}(x_{0})]$ which spelled out is:
+variational lower bound of the log likelihood. We can make this a cost function by taking the negative
+and instead minimize the negative of the lower bound of the log likelihood
+$-\mathbb{E}_{q(x_{0})}[logp_{\theta}(x_{0})]$ which spelled out is:
 
 $$L_{vb}=\mathbb{E}_{q(x_{0})}\Big[D_{KL}(q(x_{T}|x_{0})||p(x_{T}))+\sum_{t=2}^{T}\mathbb{E}_{q(x_{t}|x_{0})}[D_{KL}(q(x_{t-1}|x_{t},x_{0})||p_{\theta}(x_{t-1}|x_{t}))]-\mathbb{E}_{q(x_{1}|x_{0})}[logp_{\theta}(x_{0}|x_{1})]\Big]$$
 
@@ -76,7 +77,7 @@ transition $q(x_{t-1}|x_{t,}x_{0})$. (_Note_: we also condition on
 $x_{0}$ to make this calculation tractable, as explained in
 (Sohl-Dickstein 2015)).
 
-To maximize this lowerbound, we would first parametrize the transition
+To maximize this lowerbound (or minimize the cost function), we would first parametrize the transition
 $q(x_{t-1}|x_{t},x_{0})$ to propely construct our estimate reverse
 transition $p_{\theta}(x_{t-1}|x_{t})$. In the gaussian setting defined
 in (Ho et al. 2020), $q(x_{t-1}|x_{t},x_{0})$ ends up being
