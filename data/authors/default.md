@@ -24,5 +24,5 @@ I am also a big believer in intuition- both in understanding and in explanation-
 
 ---
 
-In my free time, I enjoy singing, learning about other people's stories (ex: through memoirs), and leisurely walks.  
+In my free time, I enjoy singing, learning about other people's stories (ex: through memoirs), leisurely walks, and [writing](https://optimismwithuncertainty.substack.com/).  
 📖: Currently learning about efficient learning, meta RL
