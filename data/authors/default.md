@@ -11,7 +11,7 @@ github: https://github.com/jsjung00
 
 **About Me**
 
-I am a research scientist at Springtail.ai researching methods to improve transformer learning sample efficiency.
+I am a research scientist at Springtail.ai researching sample efficient learning methods for AI reasoning.
 
 While currently there is a lot of focus on scalability, I believe that true intelligence comes from learning to generalize under the constraint of limited samples and so am personally excited by sample efficient learning.
 
