@@ -26,4 +26,4 @@ I am also a big believer in intuition- both in understanding and in explanation-
 
 In my free time, I enjoy singing, learning about other people's stories (ex: through memoirs), leisurely walks, and writing.
 
-📚: Beyond my immediate research interests, I am currently exploring automatic theorem provers and efficient board game solvers
+📚: Beyond my immediate research interests, I am currently exploring automated theorem provers and efficient board game solvers
