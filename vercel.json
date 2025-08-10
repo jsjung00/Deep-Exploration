@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/scaffold-diffusion",
+      "destination": "https://scaffold-diffusion-production.up.railway.app"
+    },
+    {
+      "source": "/scaffold-diffusion/:path*",
+      "destination": "https://scaffold-diffusion-production.up.railway.app/:path*"
+    }
+  ]
+}
