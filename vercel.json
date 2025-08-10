@@ -8,7 +8,5 @@
       "source": "/scaffold-diffusion/:path*",
       "destination": "https://scaffold-diffusion-production.up.railway.app/:path*"
     }
-  ],
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist"
+  ]
 }
