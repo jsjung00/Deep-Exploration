@@ -8,5 +8,12 @@
       "source": "/scaffold-diffusion/:path*",
       "destination": "https://scaffold-diffusion-production.up.railway.app/:path*"
     }
-  ]
+  ],
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {
+    "**": {
+      "runtime": "@vercel/node@18.x"
+    }
+  }
 }
