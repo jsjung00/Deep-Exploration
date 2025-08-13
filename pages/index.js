@@ -31,7 +31,7 @@ export default function Home({ posts }) {
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts.length && 'No posts found.'}
           {posts.slice(0, MAX_DISPLAY).map((frontMatter) => {
-            const { slug, date, title, summary, tags } = frontMatter
+            const { slug, date, title, summary, tags = [], externalUrl = undefined } = frontMatter
             return (
               <li key={slug} className="py-12">
                 <article>
@@ -46,12 +46,23 @@ export default function Home({ posts }) {
                       <div className="space-y-6">
                         <div>
                           <h2 className="text-2xl font-bold leading-8 tracking-tight">
-                            <Link
-                              href={`/blog/${slug}`}
-                              className="text-gray-900 dark:text-gray-100"
-                            >
-                              {title}
-                            </Link>
+                            {externalUrl ? (
+                              <a
+                                href={externalUrl}
+                                className="text-gray-900 hover:text-primary-500  dark:text-gray-100"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {title}
+                              </a>
+                            ) : (
+                              <Link
+                                href={`/blog/${slug}`}
+                                className="text-gray-900 dark:text-gray-100"
+                              >
+                                {title}
+                              </Link>
+                            )}
                           </h2>
                           <div className="flex flex-wrap">
                             {tags.map((tag) => (
@@ -64,13 +75,25 @@ export default function Home({ posts }) {
                         </div>
                       </div>
                       <div className="text-base font-medium leading-6">
-                        <Link
-                          href={`/blog/${slug}`}
-                          className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                          aria-label={`Read "${title}"`}
-                        >
-                          Read more &rarr;
-                        </Link>
+                        {externalUrl ? (
+                          <a
+                            href={externalUrl}
+                            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                            aria-label={`Read "${title}"`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Read more &rarr;
+                          </a>
+                        ) : (
+                          <Link
+                            href={`/blog/${slug}`}
+                            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                            aria-label={`Read "${title}"`}
+                          >
+                            Read more &rarr;
+                          </Link>
+                        )}
                       </div>
                     </div>
                   </div>
