@@ -11,7 +11,7 @@ github: https://github.com/jsjung00
 
 **About Me**
 
-I am a research scientist at the Biohub. Broadly I am interested in generative models and am currently working on their applications to biology.
+I am a research scientist at Biohub. Broadly I am interested in generative models and am currently working on their applications to biology.
 
 Previously I was a research scientist at Springtail.ai, where I worked on sample efficient reasoning algorithms. Before that, I graduated from the University of Chicago with degrees in Computational Applied Math, Statistics, and Economics. During that time I also worked on reinforcement learning at the Toyota Technical Institute of Chicago.
 
