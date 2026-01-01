@@ -74,15 +74,7 @@ export function ResearchProject({
 
       {/* Content */}
       <div className="min-w-0 flex-1">
-        <h3 className="text-lg font-medium leading-tight text-primary-500 hover:text-primary-600">
-          {projectPage ? (
-            <Link href={projectPage}>{title}</Link>
-          ) : arxiv ? (
-            <Link href={arxiv}>{title}</Link>
-          ) : (
-            title
-          )}
-        </h3>
+        <h3 className="text-lg font-medium leading-tight text-gray-500">{title}</h3>
 
         <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">{renderAuthors(authors)}</p>
 
@@ -100,7 +92,7 @@ export function ResearchProject({
           {projectPage && arxiv && <span className="text-gray-400">/</span>}
           {arxiv && (
             <Link href={arxiv} className="text-primary-500 hover:text-primary-600">
-              arXiv
+              paper
             </Link>
           )}
           {(projectPage || arxiv) && github && <span className="text-gray-400">/</span>}
