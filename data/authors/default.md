@@ -16,6 +16,15 @@ I am a research scientist at Biohub. Broadly I am interested in generative model
 Previously I was a research scientist at Springtail.ai, where I worked on sample efficient reasoning algorithms. Before that, I graduated from the University of Chicago with degrees in Computational Applied Math, Statistics, and Economics. I also worked on reinforcement learning at the Toyota Technical Institute at Chicago.
 
 I like to share research insights on my blog and occasionally post on X.
+\
+\
+\
+\
+\
+**Things I've been recently thinking about**
+
+- Diffusion memorization and generalization
+- Inference time scaling of protein language models to solve difficult design tasks [(project page)](https://inference-scaling-proteins.vercel.app/)
 
 <ResearchSection
 title="Research"
