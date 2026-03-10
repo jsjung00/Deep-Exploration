@@ -23,7 +23,7 @@ I like to share research insights on my blog and occasionally post on X.
 \
 **Things I've been recently thinking about**
 
-- Diffusion memorization and generalization
+- Diffusion memorization and generalization [(technical report)](https://www.deepexploration.org/static/pdfs/Diffusion_Memorization.pdf)
 - Inference time scaling of protein language models to solve difficult design tasks [(project page)](https://inference-scaling-proteins.vercel.app/)
 
 <ResearchSection
